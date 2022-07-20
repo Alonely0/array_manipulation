@@ -1,0 +1,27 @@
+[package]
+name = "array_manipulation"
+description = "Methods for manipuling arrays in a Vec-like fashion. It will (probably) get into core once const expressions get less experimental."
+version = "0.1.0"
+edition = "2021"
+authors = ["Guillem Jara <4lon3ly0@tutanota.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/Alonely0/array_manipulation/"
+documentation = "https://docs.rs/array_manipulation"
+homepage = "https://github.com/Alonely0/array_manipulation/"
+exclude = [
+    "target",
+    ".*",
+]
+categories = ["data-structures", "rust-patterns", "no-std", "embedded"]
+keywords = [
+    "array",
+    "vector",
+    "append",
+    "insert",
+    "insertion",
+]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
