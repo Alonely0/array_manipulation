@@ -1,6 +1,6 @@
 # Manipulate Arrays as if they were vectors!
 
-This crate exposes a trait that allows manipulating arrays in a vec-like fashion.
+This crate exposes 2 traits that allow manipulating arrays in a vec-like fashion.
 
 Alternatives like [ArrayVec](https://docs.rs/arrayvec/latest/arrayvec/struct.ArrayVec.html) operate over a `[MaybeUninit<T>; N]`-like data structure and panic if the size is overflown. 
 

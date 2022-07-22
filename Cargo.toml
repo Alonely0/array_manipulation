@@ -1,7 +1,7 @@
 [package]
 name = "array_manipulation"
 description = "Methods for manipuling arrays in a Vec-like fashion. It will (probably) get into core once const expressions get less experimental."
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["Guillem Jara <4lon3ly0@tutanota.com>"]
 license = "MIT"
