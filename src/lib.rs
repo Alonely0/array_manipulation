@@ -2,12 +2,8 @@
 #![feature(generic_const_exprs)]
 #![feature(raw_ref_op)]
 #![feature(const_trait_impl)]
-#![feature(const_maybe_uninit_as_mut_ptr)]
-#![feature(const_mut_refs)]
 #![feature(const_refs_to_cell)]
-#![feature(const_transmute_copy)]
 #![feature(const_ptr_read)]
-#![feature(const_slice_index)]
 #![feature(specialization)]
 #![cfg_attr(not(test), no_std)]
 #![doc = include_str!("../README.md")]
@@ -155,25 +151,8 @@ impl<T, const N: usize> const ArrayAdd<T, N> for [T; N] {
     }
 }
 
-impl<T, const N: usize> const ArrayRemove<T, N> for [T; N] {
-    default fn truncate_start<const L: usize>(self) -> [T; N - L] {
-        unsafe {
-            let result = read((&raw const self).cast::<T>().add(L).cast()); // copy from offset'ed pointer
-            forget(self); // avoid drop & deallocation of the copied elements
-            result
-        }
-    }
-
-    default fn truncate_end<const L: usize>(self) -> [T; N - L] {
-        unsafe {
-            transmute_unchecked(self) // resize self
-        }
-    }
-}
-
-#[allow(drop_bounds)] // specialization stuff
-impl<T: Drop, const N: usize> ArrayRemove<T, N> for [T; N] {
-    fn truncate_start<const L: usize>(mut self) -> [T; N - L] {
+impl<T, const N: usize> ArrayRemove<T, N> for [T; N] {
+    default fn truncate_start<const L: usize>(mut self) -> [T; N - L] {
         unsafe {
             let result = read((&raw const self).cast::<T>().add(L).cast()); // copy from offset'ed pointer
             drop_in_place(&raw mut self[..L]); // drop popped elements
@@ -181,9 +160,24 @@ impl<T: Drop, const N: usize> ArrayRemove<T, N> for [T; N] {
             result
         }
     }
-    fn truncate_end<const L: usize>(mut self) -> [T; N - L] {
+
+    default fn truncate_end<const L: usize>(mut self) -> [T; N - L] {
         unsafe {
             drop_in_place(&raw mut self[L..]); // drop popped elements
+            transmute_unchecked(self) // resize self
+        }
+    }
+}
+
+impl<T: Copy, const N: usize> const ArrayRemove<T, N> for [T; N] {
+    fn truncate_start<const L: usize>(self) -> [T; N - L] {
+        unsafe {
+            read((&raw const self).cast::<T>().add(L).cast()) // copy from offset'ed pointer
+        }
+    }
+
+    fn truncate_end<const L: usize>(self) -> [T; N - L] {
+        unsafe {
             transmute_unchecked(self) // resize self
         }
     }
