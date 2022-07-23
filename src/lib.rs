@@ -79,11 +79,11 @@ pub trait ArrayRemove<T, const N: usize>: Sized {
     /// elements except the first L ones. Won't compile if N == 0.
     /// # Examples
     /// ```
-    /// use array_manipulation::ArrayManipulation;
+    /// use array_manipulation::ArrayRemove;
     ///
     /// let array: [u8; 4] = [1, 2, 3, 4];
     /// let expected = [3, 4];
-    /// let result = array.truncate_start(2);
+    /// let result = array.truncate_start::<2>();
     /// assert_eq!(expected, result);
     /// ```
     fn truncate_start<const L: usize>(self) -> [T; N - L];
@@ -93,11 +93,11 @@ pub trait ArrayRemove<T, const N: usize>: Sized {
     /// Won't compile if N == 0.
     /// # Examples
     /// ```
-    /// use array_manipulation::ArrayManipulation;
+    /// use array_manipulation::ArrayRemove;
     ///
     /// let array: [u8; 4] = [1, 2, 3, 4];
     /// let expected = [1, 2];
-    /// let result = array.truncate_end(2);
+    /// let result = array.truncate_end::<2>();
     /// assert_eq!(expected, result);
     /// ```
     fn truncate_end<const L: usize>(self) -> [T; N - L];
